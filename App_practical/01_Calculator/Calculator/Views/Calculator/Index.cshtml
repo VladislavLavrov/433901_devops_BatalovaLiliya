@@ -1,0 +1,266 @@
+﻿@@{
+    ViewData["Title"] = "Калькулятор";
+}
+
+<style>
+    body {
+        background-color: #1c1c1e;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 30px 0;
+    }
+
+    .calc-container {
+        background-color: #000000;
+        border-radius: 40px;
+        padding: 30px 20px 40px;
+        width: 340px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    }
+
+    .calc-title {
+        color: #8e8e93;
+        font-size: 15px;
+        font-weight: 500;
+        text-align: center;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin: 0 0 25px 0;
+    }
+
+    .calc-display {
+        background-color: #1c1c1e;
+        border-radius: 20px;
+        padding: 25px 20px;
+        margin-bottom: 25px;
+        text-align: right;
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .calc-display .result-text {
+        color: #ffffff;
+        font-size: 42px;
+        font-weight: 300;
+        margin: 0;
+        word-break: break-all;
+        line-height: 1.1;
+    }
+
+    .calc-display .placeholder-text {
+        color: #48484a;
+        font-size: 42px;
+        font-weight: 300;
+        margin: 0;
+    }
+
+    .calc-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .calc-input {
+        background-color: #1c1c1e;
+        border: 1px solid #2c2c2e;
+        border-radius: 14px;
+        padding: 18px 20px;
+        color: #ffffff;
+        font-size: 22px;
+        font-weight: 300;
+        outline: none;
+        transition: border-color 0.2s, background-color 0.2s;
+        font-family: inherit;
+    }
+
+    .calc-input:focus {
+        border-color: #8e8e93;
+        background-color: #2c2c2e;
+    }
+
+    .calc-input::placeholder {
+        color: #48484a;
+        font-weight: 300;
+    }
+
+    .calc-select {
+        background-color: #1c1c1e;
+        border: 1px solid #2c2c2e;
+        border-radius: 14px;
+        padding: 18px 20px;
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: 300;
+        outline: none;
+        cursor: pointer;
+        font-family: inherit;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238e8e93' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 20px center;
+        transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .calc-select:focus {
+        border-color: #8e8e93;
+        background-color: #2c2c2e;
+    }
+
+    .calc-select option {
+        background-color: #1c1c1e;
+        color: #ffffff;
+    }
+
+    .calc-submit {
+        background-color: #8e8e93;
+        border: none;
+        border-radius: 14px;
+        padding: 18px 20px;
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+        font-family: inherit;
+        letter-spacing: 0.5px;
+        margin-top: 5px;
+    }
+
+    .calc-submit:hover {
+        background-color: #a1a1a6;
+    }
+
+    .calc-submit:active {
+        background-color: #636366;
+        transform: scale(0.98);
+    }
+
+    /* Блок "О калькуляторе" */
+    .calc-about {
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid #2c2c2e;
+    }
+
+    .calc-about-title {
+        color: #8e8e93;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin: 0 0 15px 0;
+    }
+
+    .calc-about-text {
+        color: #a1a1a6;
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1.6;
+        margin: 0 0 12px 0;
+    }
+
+    /* Блок "Пользователь" */
+    .calc-user {
+        margin-top: 20px;
+        padding: 18px 20px;
+        background-color: #1c1c1e;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .calc-user-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: #8e8e93;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 500;
+        flex-shrink: 0;
+    }
+
+    .calc-user-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .calc-user-name {
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .calc-user-role {
+        color: #8e8e93;
+        font-size: 13px;
+        font-weight: 300;
+        margin: 0;
+    }
+</style>
+
+<div class="calc-container">
+    <h2 class="calc-title">Калькулятор</h2>
+
+    <div class="calc-display">
+        @if (ViewBag.Result != null)
+        {
+            <p class="result-text">@ViewBag.Result</p>
+        }
+        else
+        {
+            <p class="placeholder-text">0</p>
+        }
+    </div>
+
+    <form method="post" asp-controller="Calculator" asp-action="Calculate" class="calc-form">
+        @Html.AntiForgeryToken()
+
+        <input type="text" name="num1" class="calc-input" placeholder="Первое число" required />
+
+        <select name="operation" class="calc-select" required>
+            <option value="Add">Сложение (+)</option>
+            <option value="Subtract">Вычитание (−)</option>
+            <option value="Multiply">Умножение (×)</option>
+            <option value="Divide">Деление (÷)</option>
+        </select>
+
+        <input type="text" name="num2" class="calc-input" placeholder="Второе число" required />
+
+        <input type="submit" value="Рассчитать" class="calc-submit" />
+    </form>
+
+    <!-- О калькуляторе -->
+    <div class="calc-about">
+        <h3 class="calc-about-title">О калькуляторе</h3>
+        <p class="calc-about-text">
+            Веб-калькулятор для выполнения основных арифметических операций:
+            сложения, вычитания, умножения и деления. Поддерживает работу с целыми
+            и дробными числами.
+        </p>
+        <p class="calc-about-text">
+            Версия 1.0 · ASP.NET Core
+        </p>
+    </div>
+
+    <!-- Информация о пользователе -->
+    <div class="calc-user">
+        <div class="calc-user-avatar">Б</div>
+        <div class="calc-user-info">
+            <p class="calc-user-name">Баталова Лилия Сергеевна</p>
+            <p class="calc-user-role">Пользователь системы</p>
+        </div>
+    </div>
+</div>
