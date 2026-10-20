@@ -2,16 +2,18 @@ using Microsoft.EntityFrameworkCore;
 using Calculator.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
+// Получаем строку подключения из appsettings.json
 string mariadbCS = builder.Configuration.GetConnectionString("DefaultConnection");
 
+// Регистрируем контекст базы данных
 builder.Services.AddDbContext<CalculatorContext>(options =>
 {
     options.UseMySql(mariadbCS, new MySqlServerVersion(new Version(10, 5, 15)));
 });
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
 
 builder.Services.AddRazorPages();
 
