@@ -1,36 +1,36 @@
 using Microsoft.EntityFrameworkCore;
 using Calculator.Data;
+using Calculator.Services;
+using Confluent.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
-// Получаем строку подключения из appsettings.json
-string mariadbCS = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Регистрируем контекст базы данных
+string? mariadbCS = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<CalculatorContext>(options =>
 {
     options.UseMySql(mariadbCS, new MySqlServerVersion(new Version(10, 5, 15)));
 });
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
-
-
 builder.Services.AddRazorPages();
+builder.Services.AddHttpClient();
+
+builder.Services.AddHostedService<KafkaConsumerService>();
+builder.Services.AddSingleton<KafkaProducerHandler>();
+builder.Services.AddSingleton<KafkaProducerService<Null, string>>();
 
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Calculator/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
