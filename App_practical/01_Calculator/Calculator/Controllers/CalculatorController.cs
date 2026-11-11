@@ -41,10 +41,11 @@ namespace Calculator.Controllers
 
             var dataInputVariant = new DataInputVariant
             {
-                Operand_1 = num1.ToString(),
-                Operand_2 = num2.ToString(),
+                Operand_1 = num1,
+                Operand_2 = num2,
                 Type_operation = operation.ToString(),
-                Result = result.ToString()
+                Result = result,
+                ExecutionDate = DateTime.Now
             };
 
             await SendDataToKafka(dataInputVariant);
@@ -55,15 +56,25 @@ namespace Calculator.Controllers
         [HttpPost]
         public IActionResult Callback([FromBody] DataInputVariant inputData)
         {
+            if (inputData == null)
+                return BadRequest();
+
+            if (inputData.ExecutionDate == null)
+                inputData.ExecutionDate = DateTime.Now;
+
             _context.DataInputVariants.Add(inputData);
             _context.SaveChanges();
+
             return Ok();
         }
-
         private async Task SendDataToKafka(DataInputVariant dataInputVariant)
         {
             var json = JsonSerializer.Serialize(dataInputVariant);
-            await _producer.ProduceAsync("lavrov", new Message<Null, string> { Value = json });
+
+            await _producer.ProduceAsync(
+                "lavrov",
+                new Message<Null, string> { Value = json }
+            );
         }
     }
 }
